@@ -1,0 +1,11 @@
+﻿Library
+Logs
+Temp
+UserSettings
+.vsconfig
+Assets/Plugins/Sirenix
+Assets/Plugins/Sirenix.meta
+Sirenix.OdinInspector.Modules.UnityMathematics.csproj
+obj/Debug/Sirenix.OdinInspector.Modules.UnityMathematics.csproj.AssemblyReference.cache
+.vs
+obj
