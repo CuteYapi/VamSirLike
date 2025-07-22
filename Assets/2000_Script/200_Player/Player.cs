@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -66,7 +65,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    [Button("Add Atk")]
     public void AddAtkReason(AtkReason reason, int value)
     {
         if (AtkReasonDictionary.TryAdd(reason, value) == false)
@@ -81,7 +79,6 @@ public class Player : MonoBehaviour
 #endif
     }
 
-    [Button("Add MoveSpeed")]
     public void AddMoveSpeedReason(MoveSpeedReason reason, int value)
     {
         if (MoveSpeedReasonDictionary.TryAdd(reason, value) == false)
