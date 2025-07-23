@@ -1,14 +1,103 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int Hp;
+    public EnemyStatus Status;
 
-    public int Atk;
+    public Rigidbody2D rigidBody;
 
-    public int MoveSpeed;
+    public int CurrentHp { get; private set; }
+
+    public float HpRatio
+    {
+        get => (float)CurrentHp / Status.MaxHp;
+    }
+
+    public bool IsDead
+    {
+        get => CurrentHp <= 0;
+    }
 
     public string Name;
 
     public EnemyType Type;
+
+    #region Unity Event
+
+    private void FixedUpdate()
+    {
+        MoveToPlayer();
+    }
+
+    private void MoveToPlayer()
+    {
+        Player player = Manager.Data.Player;
+        if (player == null)
+        {
+            return;
+        }
+
+        Vector2 direction = (player.transform.position - transform.position).normalized;
+
+        rigidBody.linearVelocity = direction * Status.MoveSpeed;
+    }
+
+    #endregion
+
+    public void Initialize()
+    {
+        gameObject.SetActive(true);
+
+        // 능력치 세팅이 원래는 데이터 테이블 참조해서 세팅
+        Status.TempStatusInit();
+        GetHeal(Status.MaxHp);
+    }
+
+
+    public void SetPosition(Vector3 position)
+    {
+        transform.localPosition = position;
+    }
+
+
+
+    #region HP 작업
+
+    public void GetDamaged(int damage)
+    {
+        CurrentHp -= damage;
+
+        if (IsDead == true)
+        {
+            CurrentHp = 0;
+            Log.Message(LogType.StatHp, $"{this.name} 사망!");
+        }
+#if Log
+        else
+        {
+            Log.Message(LogType.StatHp, $"{this.name} 공격 받음 남은 체력 :{CurrentHp}");
+        }
+#endif
+    }
+
+    public void GetHeal(int amount)
+    {
+        CurrentHp += amount;
+
+        if (CurrentHp > Status.MaxHp)
+        {
+            CurrentHp = Status.MaxHp;
+        }
+
+        Log.Message(LogType.StatHp, $"{this.name} 치유 받음 현재 체력 :{CurrentHp}");
+    }
+
+    private void Died()
+    {
+        
+    }
+
+    #endregion
+
 }

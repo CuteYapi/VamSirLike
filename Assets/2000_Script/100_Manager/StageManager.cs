@@ -14,14 +14,29 @@ public class StageManager : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            Enemy newEnemy = Instantiate(Manager.Data.RefEnemy);
+            Enemy newEnemy = Manager.Pool.GetEnemy();
 
-            int randomXPosition = Random.Range(-4, 5);
-            int randomYPosition = Random.Range(-4, 5);
-
-            newEnemy.transform.localPosition = new Vector3(randomXPosition, randomYPosition, 0);
+            Vector3 spawnPosition = GetRandomCircleSpawnPosition();
+            newEnemy.Initialize();
+            newEnemy.SetPosition(spawnPosition);
 
             EnemyList.Add(newEnemy);
         }
+    }
+
+    private Vector3 GetRandomCircleSpawnPosition()
+    {
+        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+
+        Vector3 spawnDirection = new Vector3(
+            Mathf.Cos(angle),
+            Mathf.Sin(angle),
+            0
+        );
+
+        Vector3 spawnPosition = Manager.Data.Player.transform.position
+                                + spawnDirection * Manager.Data.SpawnDistance;
+
+        return spawnPosition;
     }
 }

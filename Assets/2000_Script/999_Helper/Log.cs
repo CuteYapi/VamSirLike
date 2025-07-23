@@ -45,10 +45,15 @@ public static class Log
             {
                 typeMessage = $"<Color=red>[{type}]</color> ";
             }
-            break;
+                break;
             case LogType.StatMoveSpeed:
             {
                 typeMessage = $"<Color=green>[{type}]</color> ";
+            }
+                break;
+            case LogType.StatHp:
+            {
+                typeMessage = $"<Color=blue>[{type}]</color> ";
             }
                 break;
         }

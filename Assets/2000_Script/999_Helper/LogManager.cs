@@ -10,7 +10,7 @@ public class LogManager : MonoBehaviour
 
         for (int j = 0; j < (int)LogType.Max; j++)
         {
-            LogOn[j] = false;
+            LogOn[j] = true;
         }
     }
 }
