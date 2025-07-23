@@ -5,6 +5,8 @@ public class StageManager : MonoBehaviour
 {
     public List<Enemy> EnemyList = new List<Enemy>();
 
+    private int mSpawnIndex = 0;
+
     public void Initialize()
     {
         SpawnMonster();
@@ -19,6 +21,7 @@ public class StageManager : MonoBehaviour
             Vector3 spawnPosition = GetRandomCircleSpawnPosition();
             newEnemy.Initialize();
             newEnemy.SetPosition(spawnPosition);
+            newEnemy.SetName($" {++mSpawnIndex}");
 
             EnemyList.Add(newEnemy);
         }

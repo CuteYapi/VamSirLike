@@ -49,6 +49,8 @@ public class Enemy : MonoBehaviour
     {
         gameObject.SetActive(true);
 
+        Type = EnemyType.Slime;
+
         // 능력치 세팅이 원래는 데이터 테이블 참조해서 세팅
         Status.TempStatusInit();
         GetHeal(Status.MaxHp);
@@ -60,6 +62,10 @@ public class Enemy : MonoBehaviour
         transform.localPosition = position;
     }
 
+    public void SetName(string text)
+    {
+        Name = Type.ToString() + text;
+    }
 
 
     #region HP 작업
@@ -70,13 +76,12 @@ public class Enemy : MonoBehaviour
 
         if (IsDead == true)
         {
-            CurrentHp = 0;
-            Log.Message(LogType.StatHp, $"{this.name} 사망!");
+            Died();
         }
 #if Log
         else
         {
-            Log.Message(LogType.StatHp, $"{this.name} 공격 받음 남은 체력 :{CurrentHp}");
+            Log.Message(LogType.StatHp, $"{Name} 공격 받음 남은 체력 :{CurrentHp}");
         }
 #endif
     }
@@ -90,12 +95,15 @@ public class Enemy : MonoBehaviour
             CurrentHp = Status.MaxHp;
         }
 
-        Log.Message(LogType.StatHp, $"{this.name} 치유 받음 현재 체력 :{CurrentHp}");
+        Log.Message(LogType.StatHp, $"{Name} 치유 받음 현재 체력 :{CurrentHp}");
     }
 
     private void Died()
     {
-        
+        CurrentHp = 0;
+        gameObject.SetActive(false);
+
+        Log.Message(LogType.StatHp, $"{Name} 사망!");
     }
 
     #endregion
