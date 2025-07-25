@@ -6,9 +6,11 @@ public class WorldToScreenController : MonoBehaviour, IUI
 {
     public float ResetTime = 0.2f;
 
-    private Coroutine mCoResetPosition;
+    private Coroutine mCoResetPosition = null;
 
     private Dictionary<Enemy, Vector3> mEnemyScreenPositionDictionary = new Dictionary<Enemy, Vector3>();
+
+    #region 공통 부분 : 상송 받아 정의하는 부분
 
     public void Initialize()
     {
@@ -17,7 +19,12 @@ public class WorldToScreenController : MonoBehaviour, IUI
 
     public void Open()
     {
-        mCoResetPosition = StartCoroutine(CoResetPositionDic());
+        gameObject.SetActive(true);
+
+        if (mCoResetPosition == null)
+        {
+            mCoResetPosition = StartCoroutine(CoResetPositionDic());
+        }
     }
 
     public void Close()
@@ -27,11 +34,8 @@ public class WorldToScreenController : MonoBehaviour, IUI
             StopCoroutine(mCoResetPosition);
             mCoResetPosition = null;
         }
-    }
 
-    public void SetHpBar()
-    {
-
+        gameObject.SetActive(false);
     }
 
     private IEnumerator CoResetPositionDic()
@@ -43,8 +47,35 @@ public class WorldToScreenController : MonoBehaviour, IUI
             mEnemyScreenPositionDictionary.Clear();
             yield return waitTime;
         }
+    }
+
+    #endregion
+
+    #region Unity Event 함수
+
+    private void Update()
+    {
+        SetHpBar();
+    }
 
 
+    private void SetHpBar()
+    {
+        List<Enemy> enemyList = Manager.Stage.EnemyList;
+
+        foreach (Enemy enemy in enemyList)
+        {
+            if (enemy.IsDead == true)
+            {
+                continue;
+            }
+
+            Vector3 screenPosition = GetScreenPosition(enemy);
+            HpBarView hpView = Manager.Pool.GetHpBarView();
+            hpView.transform.SetParent(transform);
+            hpView.SetPosition(screenPosition);
+            hpView.Open();
+        }
     }
 
     private Vector3 GetScreenPosition(Enemy target)
@@ -57,4 +88,6 @@ public class WorldToScreenController : MonoBehaviour, IUI
 
         return screenPosition;
     }
+
+    #endregion
 }

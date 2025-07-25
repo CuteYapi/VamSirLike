@@ -36,4 +36,26 @@ public class PoolManager : MonoBehaviour
 
         return targetEnemy;
     }
+
+
+    public List<HpBarView> HpBarViewPool = new List<HpBarView>();
+
+    public HpBarView GetHpBarView()
+    {
+        HpBarView target = HpBarViewPool.FirstOrDefault(target => target.gameObject.activeSelf == false);
+        if (target != null)
+        {
+            return target;
+        }
+
+
+        // 2. 만약 없다면 생성 후 풀에 추가하고 반환
+        HpBarView refHpBar = Manager.Data.RefHpBarView;
+        target = Instantiate(refHpBar);
+        target.Initialize();
+
+        HpBarViewPool.Add(target);
+
+        return target;
+    }
 }

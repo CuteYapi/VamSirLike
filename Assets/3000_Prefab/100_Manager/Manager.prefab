@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPool: []
+  HpBarViewPool: []
 --- !u!1 &7751259236385999564
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,3 +232,4 @@ MonoBehaviour:
   SpawnDistance: 5
   RefPlayer: {fileID: 5512033605285263467, guid: b0a326d8fdda1594eb81302ca5941431, type: 3}
   RefEnemy: {fileID: 4508011049367845017, guid: 9b6bf4a1cd713ca4a94e337f3a884dc7, type: 3}
+  RefHpBarView: {fileID: 1250666346006633280, guid: 5450d42aecbac054c84573fc794d5ae9, type: 3}

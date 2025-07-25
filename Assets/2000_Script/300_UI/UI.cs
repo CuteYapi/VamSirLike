@@ -10,18 +10,19 @@ public class UI : MonoBehaviour, IUI
     public void Initialize()
     {
         SetDebugController();
+        SetWorldToScreenController();
 
         Open();
     }
 
     public void Open()
     {
-
+        WorldToScreen.Open();
     }
 
     public void Close()
     {
-
+        WorldToScreen.Close();
     }
 
     public static DebugController Debug { get; private set; }
@@ -30,5 +31,13 @@ public class UI : MonoBehaviour, IUI
     {
         Debug = transform.GetComponentInChildren<DebugController>();
         Debug.Initialize();
+    }
+
+    public static WorldToScreenController WorldToScreen { get; private set; }
+
+    private void SetWorldToScreenController()
+    {
+        WorldToScreen = transform.GetComponentInChildren<WorldToScreenController>();
+        WorldToScreen.Initialize();
     }
 }
