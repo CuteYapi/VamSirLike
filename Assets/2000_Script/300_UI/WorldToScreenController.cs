@@ -60,6 +60,16 @@ public class WorldToScreenController : MonoBehaviour, IUI
         SetHpBar();
     }
 
+    private Vector3 GetScreenPosition(Enemy target)
+    {
+        if (mEnemyScreenPositionDictionary.TryGetValue(target, out Vector3 screenPosition) == false)
+        {
+            screenPosition = Camera.main.WorldToScreenPoint(target.transform.position);
+            mEnemyScreenPositionDictionary.Add(target, screenPosition);
+        }
+
+        return screenPosition;
+    }
 
     private void SetHpBar()
     {
@@ -87,16 +97,15 @@ public class WorldToScreenController : MonoBehaviour, IUI
         }
     }
 
-    private Vector3 GetScreenPosition(Enemy target)
+
+    public void SetDamageView(Enemy enemy, int value)
     {
-        if (mEnemyScreenPositionDictionary.TryGetValue(target, out Vector3 screenPosition) == false)
-        {
-            screenPosition = Camera.main.WorldToScreenPoint(target.transform.position);
-            mEnemyScreenPositionDictionary.Add(target, screenPosition);
-        }
-
-        return screenPosition;
+        Vector3 targetPosition = GetScreenPosition(enemy);
+        DamageView damageView = Manager.Pool.GetDamageView();
+        damageView.SetText(value);
+        damageView.SetPosition(targetPosition);
+        damageView.transform.SetParent(transform);
+        damageView.Open();
     }
-
     #endregion
 }

@@ -7,6 +7,10 @@ public class Player : MonoBehaviour
     public PlayerStatus Status;
     public int CurrentHp { get; private set; }
 
+    private float mTimer;
+    private float mAttackInterval = 1f;
+
+
     public float HpRatio
     {
         get => (float)CurrentHp / Status.MaxHp;
@@ -21,7 +25,13 @@ public class Player : MonoBehaviour
     {
         PlayerMoveInput();
 
-        AttackNearPlayerSquare();
+        mTimer += Time.deltaTime;
+
+        if (mTimer >= mAttackInterval)
+        {
+            AttackNearPlayerSquare();
+            mTimer = 0;
+        }
     }
 
     private void PlayerMoveInput()

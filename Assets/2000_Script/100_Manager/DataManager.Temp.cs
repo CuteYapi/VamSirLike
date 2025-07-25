@@ -7,4 +7,6 @@ public partial class DataManager // Temp
     public Enemy RefEnemy;
 
     public HpBarView RefHpBarView;
+
+    public DamageView RefDamageView;
 }

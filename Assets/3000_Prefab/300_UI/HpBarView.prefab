@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2508279059939026483}
   - component: {fileID: 1250666346006633280}
   m_Layer: 5
-  m_Name: HpBar
+  m_Name: HpBarView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

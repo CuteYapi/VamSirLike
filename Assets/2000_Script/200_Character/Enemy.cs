@@ -85,6 +85,8 @@ public class Enemy : MonoBehaviour
         }
 #endif
 
+        UI.WorldToScreen.SetDamageView(this, damage);
+
         if (IsDead == true)
         {
             Died();
