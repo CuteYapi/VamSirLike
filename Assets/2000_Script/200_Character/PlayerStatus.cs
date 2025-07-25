@@ -121,7 +121,7 @@ public class PlayerStatus : MonoBehaviour
     public void TempStatusInit()
     {
         AddHpReason(HpReason.Level, 10);
-        AddAtkReason(AtkReason.Level, 1);
+        AddAtkReason(AtkReason.Level, 2);
         AddMoveSpeedReason(MoveSpeedReason.Level, 10);
     }
 }

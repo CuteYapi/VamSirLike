@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public PlayerStatus Status;
+    public PlayerSkill Skill;
+
     public int CurrentHp { get; private set; }
 
     private float mTimer;
@@ -29,7 +31,7 @@ public class Player : MonoBehaviour
 
         if (mTimer >= mAttackInterval)
         {
-            AttackNearPlayerSquare();
+            Skill.AttackNearPlayerSquare();
             mTimer = 0;
         }
     }
@@ -54,7 +56,6 @@ public class Player : MonoBehaviour
             transform.position += Vector3.right * Time.deltaTime * Status.MoveSpeed;
         }
     }
-
 
     public void Initialize()
     {
@@ -94,51 +95,5 @@ public class Player : MonoBehaviour
         }
 
         Log.Message(LogType.StatHp, $"{this.name} 치유 받음 현재 체력 :{CurrentHp}");
-    }
-
-
-
-    public void AttackNearPlayerSquare()
-    {
-        SkillAreaInfo skillAreaData = new SkillAreaInfo();
-        skillAreaData.TargetPosition = transform.position;
-        skillAreaData.Size = new Vector3(3, 3, 0);
-        skillAreaData.Rotation = Vector3.zero;
-
-        List<Enemy> targetEnemyList = GetEnemyInBox(skillAreaData);
-
-        foreach (Enemy enemy in targetEnemyList)
-        {
-            enemy.GetDamaged(Status.Atk);
-        }
-    }
-
-    private List<Enemy> GetEnemyInBox(SkillAreaInfo skillAreaInfo)
-    {
-        Vector3 targetPosition = skillAreaInfo.TargetPosition;
-        Vector3 targetBoxSize = skillAreaInfo.Size;
-        Collider2D[] results = new Collider2D[10];
-        Quaternion searchRotation = Quaternion.Euler(skillAreaInfo.Rotation);
-
-        results = Physics2D.OverlapBoxAll(targetPosition, targetBoxSize, 0f);
-
-        List<Enemy> targetEnemyList = new List<Enemy>();
-        foreach (var collider2D in results)
-        {
-            if (collider2D == null)
-            {
-                break;
-            }
-
-            Enemy targetEnemy = collider2D.GetComponent<Enemy>();
-            if (targetEnemy == null)
-            {
-                continue;
-            }
-
-            targetEnemyList.Add(targetEnemy);
-        }
-
-        return targetEnemyList;
     }
 }
