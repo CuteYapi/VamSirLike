@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -21,8 +23,16 @@ public class Enemy : MonoBehaviour
 
     public EnemyType Type;
 
-    #region Unity Event
+    private Color32 mDamagedColor = Color.red;
+    private Color32 mMainColor = Color.white;
 
+    private WaitForSeconds mDamagedSwapTime = new WaitForSeconds(0.2f);
+
+    private SpriteRenderer mRenderer;
+
+    private Coroutine mCoDamagedFx;
+
+    #region Unity Event
     private void FixedUpdate()
     {
         MoveToPlayer();
@@ -46,6 +56,8 @@ public class Enemy : MonoBehaviour
     public void Initialize()
     {
         gameObject.SetActive(true);
+
+        mRenderer = transform.GetComponent<SpriteRenderer>();
 
         Type = EnemyType.Slime;
 
@@ -88,6 +100,8 @@ public class Enemy : MonoBehaviour
         if (IsDead == true)
         {
             Died();
+
+            return;
         }
 #if Log
         else
@@ -95,6 +109,34 @@ public class Enemy : MonoBehaviour
             Log.Message(LogType.StatHp, $"{Name} 공격 받음 남은 체력 :{CurrentHp}");
         }
 #endif
+
+        if (mCoDamagedFx != null)
+        {
+            StopCoroutine(mCoDamagedFx);
+        }
+        mCoDamagedFx = StartCoroutine(CoDamagedFx());
+    }
+
+    private IEnumerator CoDamagedFx()
+    {
+        mRenderer.color = mDamagedColor;
+        yield return mDamagedSwapTime;
+
+        mRenderer.color = mMainColor;
+        yield return mDamagedSwapTime;
+
+        mRenderer.color = mDamagedColor;
+        yield return mDamagedSwapTime;
+
+        mRenderer.color = mMainColor;
+        yield return mDamagedSwapTime;
+
+        mRenderer.color = mDamagedColor;
+        yield return mDamagedSwapTime;
+
+        mRenderer.color = mMainColor;
+
+        mCoDamagedFx = null;
     }
 
     public void GetHeal(int amount)
@@ -112,6 +154,9 @@ public class Enemy : MonoBehaviour
     private void Died()
     {
         CurrentHp = 0;
+
+        StopAllCoroutines();
+
         gameObject.SetActive(false);
 
 #if Log
