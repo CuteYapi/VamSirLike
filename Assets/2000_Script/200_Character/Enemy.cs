@@ -5,8 +5,6 @@ public class Enemy : MonoBehaviour
 {
     public EnemyStatus Status;
 
-    public Rigidbody2D rigidBody;
-
     public int CurrentHp { get; private set; }
 
     public float HpRatio
@@ -38,9 +36,9 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Vector2 direction = (player.transform.position - transform.position).normalized;
+        Vector3 direction = (player.transform.position - transform.position).normalized;
 
-        rigidBody.linearVelocity = direction * Status.MoveSpeed;
+        transform.localPosition += direction * Status.MoveSpeed * Time.deltaTime;
     }
 
     #endregion
