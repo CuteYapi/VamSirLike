@@ -25,15 +25,15 @@ public class Enemy : MonoBehaviour
 
     private Color32 mDamagedColor = Color.red;
     private Color32 mMainColor = Color.white;
-
-    private WaitForSeconds mDamagedSwapTime = new WaitForSeconds(0.2f);
+    private static readonly WaitForSeconds waitForSeconds = new WaitForSeconds(0.2f);
+    private WaitForSeconds mDamagedSwapTime = waitForSeconds;
 
     private SpriteRenderer mRenderer;
 
     private Coroutine mCoDamagedFx;
 
     #region Unity Event
-    private void FixedUpdate()
+    private void Update()
     {
         MoveToPlayer();
     }
