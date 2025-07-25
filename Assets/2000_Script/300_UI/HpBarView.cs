@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class HpBarView : MonoBehaviour, IUI
 {
+    public float steeringValue;
+
     private RectTransform mViewRectTransform;
     private Slider mSlider;
 
@@ -25,7 +27,7 @@ public class HpBarView : MonoBehaviour, IUI
 
     public void SetPosition(Vector3 position)
     {
-        mViewRectTransform.position = position;
+        mViewRectTransform.position = position + Vector3.up * steeringValue;
     }
 
     public void SetSliderRatio(float ratio)

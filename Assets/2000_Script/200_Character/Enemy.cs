@@ -74,6 +74,17 @@ public class Enemy : MonoBehaviour
     {
         CurrentHp -= damage;
 
+        if (UI.WorldToScreen.EnemyHpBarViewDictionary.TryGetValue(this, out HpBarView hpBar) == true)
+        {
+            hpBar.SetSliderRatio(HpRatio);
+        }
+#if Log
+        else
+        {
+            Log.Error(LogType.UI_WorldToScreen, $"WorldToScreen에 HpBarView 가 세팅되지 않았습니다!");
+        }
+#endif
+
         if (IsDead == true)
         {
             Died();
@@ -103,9 +114,22 @@ public class Enemy : MonoBehaviour
         CurrentHp = 0;
         gameObject.SetActive(false);
 
+#if Log
         Log.Message(LogType.StatHp, $"{Name} 사망!");
+#endif
+
+        if (UI.WorldToScreen.EnemyHpBarViewDictionary.TryGetValue(this, out HpBarView hpBar) == true)
+        {
+            hpBar.Close();
+            UI.WorldToScreen.EnemyHpBarViewDictionary.Remove(this);
+        }
+#if Log
+        else
+        {
+            Log.Error(LogType.UI_WorldToScreen, $"WorldToScreen에 HpBarView 가 세팅되지 않았습니다!");
+        }
+#endif
     }
 
     #endregion
-
 }

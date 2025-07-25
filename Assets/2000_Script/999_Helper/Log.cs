@@ -12,6 +12,8 @@ public enum LogType
     StatHp,
     StatAtk,
     StatMoveSpeed,
+
+    UI_WorldToScreen,
     
     Max,
 }
